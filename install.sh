@@ -164,7 +164,12 @@ install.ohmyzsh() {
 
     # https://ohmyz.sh/#install
     local install_url=$(get-github-url "https://github.com/ohmyzsh/ohmyzsh/raw/master/tools/install.sh")
-    curl -sSL -H 'Cache-Control: no-cache' "${install_url}" | sudo -Eu ${S_USER} sh
+    # curl -sSL -H 'Cache-Control: no-cache' "${install_url}" | sudo -Eu ${S_USER} sh
+    if [[ -n "${GITHUB_PROXY}" ]]; then
+        curl -sSL -H 'Cache-Control: no-cache' "${install_url}" | sudo -Eu ${S_USER} REMOTE="${GITHUB_PROXY}/https://github.com/ohmyzsh/ohmyzsh.git" sh
+    else
+        curl -sSL -H 'Cache-Control: no-cache' "${install_url}" | sudo -Eu ${S_USER} sh
+    fi
 }
 
 
